@@ -35,11 +35,11 @@ class Assign_Right(Token):
     def __init__(self, value):
         super().__init__(value)
 
-class Plus(Token):
+class Plus_Op(Token):
     def __init__(self, value):
         super().__init__(value)
 
-class Minus(Token):
+class Minus_Op(Token):
     def __init__(self, value):
         super().__init__(value)
 
@@ -60,5 +60,9 @@ class Integer(Token):
         super().__init__(value)
 
 class Space(Token):
+    def __init__(self, value):
+        super().__init__(value)
+
+class Error(Token):
     def __init__(self, value):
         super().__init__(value)
