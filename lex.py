@@ -31,6 +31,7 @@ class Interpreter():
         self.QUESTION = "QUESTION"
         self.GUARD_CLOSE = "GUARD_CLOSE"
         self.GUARD_OPEN = "GUARD_OPEN"
+        self.INTEGER = "INTEGER"
 
         self.syntaxes = {
             "STACK": "abcdefghjklmnpqrstuvwxyz",
@@ -44,6 +45,7 @@ class Interpreter():
             "QUESTION": "?",
             "GUARD_CLOSE": ")",
             "GUARD_OPEN": "(",
+            "INTEGER": "0123456789"
         }
 
     def get_token(self, character):
@@ -84,14 +86,14 @@ class Interpreter():
         elif character in self.syntaxes["GUARD_OPEN"]:
             return Token(character, self.GUARD_OPEN)
 
+        elif character in self.syntaxes["INTEGER"]:
+            return Token(character, self.INTEGER)
+
         else:
             raise ValueError("Wrong Syntax")
 
 
     def lex(self, characters,index = 0):
-        #print(index)
-        #print(characters[index])
-        #print("===")
         if len(characters) == 0:
             raise ValueError("Command string empty")
             
@@ -100,9 +102,18 @@ class Interpreter():
 
         return [self.get_token(characters[index])] + (self.lex(characters, index + 1))
 
+    #33>o
+    #function to get in with more than 1 character
+    #def get_full_int(self, tokens):
+
+        #if tokens[0].type == self.INTEGER:
+
+    #def output(self, tokens)
+
+
 
 inter = Interpreter()
-crs = "io"
+crs = "a>3+4"
 lst = inter.lex(crs)
 
 print(lst)

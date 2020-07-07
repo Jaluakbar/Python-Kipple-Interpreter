@@ -4,7 +4,6 @@
 # there is no more input left for lexical analysis
 INTEGER, PLUS, EOF = 'INTEGER', 'PLUS', 'EOF'
 
-
 class Token(object):
     def __init__(self, type, value):
         # token type: INTEGER, PLUS, or EOF
