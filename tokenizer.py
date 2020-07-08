@@ -1,21 +1,25 @@
 from typing import List
 from tokens import *
 
-def get_str_from_file(filename : str)->str:
+def get_str_from_file(filename : str)->List[str]:
     f = open(filename, "r")
-    return " ".join(f.read().split())
+    all =  " ".join(f.read().split())
+    return all.split()
 
 def multiple_digits(code : str)->int:
-    if code[0].isdigit():
+    if code[0].isdigit() and len(code) == 1:
+        return 1
+    elif code[0].isdigit():
         return 1 + multiple_digits(code[1:])
     else:
         return 0
 
 def convert_str(code : str)->List[Token]:
+
     head = code[:1]
     tail = code[1:]
 
-    if(len(tail) == 1):
+    if(len(tail) == 0):
         if head.isdigit():
             return [Integer(head)]
         elif head in "abcdefghjklmnpqrstuvwxyz":
@@ -40,13 +44,18 @@ def convert_str(code : str)->List[Token]:
             return [Assign_Left(head)]
         elif head == " ":
             return [Space(head)]
+        elif head == "?":
+            return[Question(head)]
         else:
             return [Error(head)]
-
     else:
         if head.isdigit():
             used_chrs = multiple_digits(code)
-            return [Integer(code[0:used_chrs])] + convert_str(code[used_chrs:])
+
+            if len(code[used_chrs:]) == 0:
+                return [Integer(code[0:used_chrs])]
+            else:
+                return [Integer(code[0:used_chrs])] + convert_str(code[used_chrs:])
         elif head in "abcdefghjklmnpqrstuvwxyz":
             return [Normal_Stack(head)] + convert_str(tail)
         elif head == "i":
@@ -69,12 +78,14 @@ def convert_str(code : str)->List[Token]:
             return [Assign_Left(head)] + convert_str(tail)
         elif head == " ":
             return [Space(head)] + convert_str(tail)
+        elif head == "?":
+            return [Question(head)] + convert_str(tail)
         else:
             return [Error(head)] + convert_str(tail)
 
-
 # r = get_str_from_file("text.txt")
 # print (r)
-# lst = convert_str(r)
 
-# print(lst)
+# for i in r:
+#     print(convert_str(i))
+

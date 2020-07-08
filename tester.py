@@ -1,13 +1,19 @@
-thisdict = {
-  "brand": "Ford",
-  "model": "Mustang",
-  "year": 1964
-}
+from tokens import *
+from tokenizer import *
+from stack import *
+from interpreter import *
 
+r = get_str_from_file("text.txt")
+print (r)
 
-s = "string"
+all = []
+for i in r:
+    all.append(convert_str(i))
 
-head = s[:1]
-tail = s[1:]
+print(all)
 
-print(head, tail)
+print(Stack_Holder.data["a"][-1])
+
+operator(all[0])
+
+print(Stack_Holder.data)
