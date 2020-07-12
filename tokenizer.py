@@ -4,7 +4,7 @@ from tokens import *
 def get_str_from_file(filename : str)->List[str]:
     f = open(filename, "r")
     all =  " ".join(f.read().split())
-    return all.split()
+    return all
 
 def multiple_digits(code : str)->int:
     if code[0].isdigit() and len(code) == 1:
