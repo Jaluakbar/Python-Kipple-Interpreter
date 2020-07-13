@@ -83,6 +83,7 @@ def convert_str(code : str)->List[Token]:
         else:
             return [Error(head)] + convert_str(tail)
 
+
 # r = get_str_from_file("text.txt")
 # print (r)
 

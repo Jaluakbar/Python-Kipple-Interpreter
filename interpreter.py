@@ -2,7 +2,7 @@ from tokens import *
 from tokenizer import *
 from stack import *
 
-def operator(tokens : List[Token]):
+def operator(tokens : List[Token], stack : program_stack):
     index = [i for i, x in enumerate(tokens) if isinstance(x, Op_Token)]
     print("index", index)
 
@@ -15,45 +15,46 @@ def operator(tokens : List[Token]):
     print(list_tail)
 
     print("op_index", op_index)
+    print(stack.data)
 
     if isinstance(tokens[op_index], Plus_Op):
         lhs = tokens[op_index-1].value
-        rhs = int(tokens[op_index+1].value)
+        rhs = get_token_value(stack, tokens[op_index+1], tokens[op_index-1])
 
-        Stack_Holder.data[lhs][-1] += rhs
+        print(type(lhs), type(rhs))
 
-        operator(list_tail)
+        add_value_stack(stack, lhs, rhs)
+
+        operator(list_tail, stack)
 
     elif isinstance(tokens[op_index], Minus_Op):
         lhs = tokens[op_index-1].value
         rhs = int(tokens[op_index+1].value)
 
-        Stack_Holder.data[lhs][-1] -= rhs
-        operator(list_tail)
-
-
+        stack.data[lhs][-1] -= rhs
+        operator(list_tail, stack)
     
     elif isinstance(tokens[op_index], Assign_Left):
         lhs = tokens[op_index-1].value
-        rhs = tokens[op_index+1].value
+        rhs = int(tokens[op_index+1].value)
 
-        Stack_Holder.data[lhs].append(rhs)
-        operator(list_tail)
+        stack.data[lhs].append(rhs)
+        operator(list_tail, stack)
 
 
     elif isinstance(tokens[op_index], Assign_Right):
-        lhs = tokens[op_index-1].value
+        lhs = int(tokens[op_index-1].value)
         rhs = tokens[op_index+1].value
 
-        Stack_Holder.data[rhs].append(lhs)
-        operator(list_tail)
+        stack.data[rhs].append(lhs)
+        operator(list_tail, stack)
 
     
     elif isinstance(tokens[op_index], Question):
         lhs = tokens[op_index-1].value
 
-        if Stack_Holder.data[lhs][-1] == 0:
-            Stack_Holder.data[lhs].clear()
+        if stack.data[lhs][-1] == 0:
+            stack.data[lhs].clear()
         
-        operator(list_tail)
+        operator(list_tail, stack)
 
