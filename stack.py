@@ -36,18 +36,21 @@ def get_last_value(stack : program_stack, stackname : str)->int:
     return int(stack.data[stackname][-1])
 
 def pop_last_value(stack : program_stack, stackname : str)->int:
-    value = stack.data[stackname].pop()
-    return int(value)
+    if len(stack.data[stackname]) == 0:
+        return 0
+    return int(stack.data[stackname].pop())
 
 def add_value_stack(stack : program_stack, stackname : str, value : int):
     if len(stack.data[stackname]) == 0:
-        print(type(value))
         stack.data[stackname].append(value)
     else:
         stack.data[stackname][-1] += value
 
 def sub_value_stack(stack : program_stack, stackname : str, value : int):
-    stack.data[stackname][-1] -= value
+    if len(stack.data[stackname]) == 0:
+        stack.data[stackname].append(0 - value)
+    else:
+        stack.data[stackname][-1] -= value
 
 def get_token_value(stack : program_stack, token : Token, other : Token)->int:
     if token.value != other.value:
