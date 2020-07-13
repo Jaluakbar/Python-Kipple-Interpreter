@@ -15,6 +15,10 @@ class Op_Token(Token):
     def __init__(self, value):
         super().__init__(value)
 
+class Control(Token):
+    def __init__(self, value):
+        super().__init__(value)
+
 class Normal_Stack(Token):
     def __init__(self, value):
         super().__init__(value)
@@ -51,11 +55,11 @@ class Question(Op_Token):
     def __init__(self, value):
         super().__init__(value)
 
-class Quard_Open(Token):
+class Guard_Open(Control):
     def __init__(self, value):
         super().__init__(value)
 
-class Quard_Close(Token):
+class Guard_Close(Control):
     def __init__(self, value):
         super().__init__(value)
 

@@ -29,10 +29,13 @@ class program_stack:
             "w" : [0],
             "x" : [0],
             "y" : [0],
-            "z" : [0]
+            "z" : [0],
+            "@" : [0]
         }
 
 def get_last_value(stack : program_stack, stackname : str)->int:
+    if len(stack.data[stackname]) == 0:
+        return 0
     return int(stack.data[stackname][-1])
 
 def pop_last_value(stack : program_stack, stackname : str)->int:

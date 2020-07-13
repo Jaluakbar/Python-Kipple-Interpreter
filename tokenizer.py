@@ -22,7 +22,7 @@ def convert_str(code : str)->List[Token]:
     if(len(tail) == 0):
         if head.isdigit():
             return [Integer(head)]
-        elif head in "abcdefghjklmnpqrstuvwxyz":
+        elif head in "abcdefghjklmnpqrstuvwxyz@":
             return [Normal_Stack(head)]
         elif head == "i":
             return [Input_Stack(head)]
@@ -31,9 +31,9 @@ def convert_str(code : str)->List[Token]:
         elif head == "@":
             return [Ascii_Stack(head)]    
         elif head == "(":
-            return [Quard_Open(head)]
+            return [Guard_Open(head)]
         elif head == ")":
-            return [Quard_Close(head)]
+            return [Guard_Close(head)]
         elif head == "+":
             return [Plus_Op(head)]
         elif head == "-":
@@ -56,7 +56,7 @@ def convert_str(code : str)->List[Token]:
                 return [Integer(code[0:used_chrs])]
             else:
                 return [Integer(code[0:used_chrs])] + convert_str(code[used_chrs:])
-        elif head in "abcdefghjklmnpqrstuvwxyz":
+        elif head in "abcdefghjklmnpqrstuvwxyz@":
             return [Normal_Stack(head)] + convert_str(tail)
         elif head == "i":
             return [Input_Stack(head)] + convert_str(tail)
@@ -65,9 +65,9 @@ def convert_str(code : str)->List[Token]:
         elif head == "@":
             return [Ascii_Stack(head)] + convert_str(tail)    
         elif head == "(":
-            return [Quard_Open(head)] + convert_str(tail)
+            return [Guard_Open(head)] + convert_str(tail)
         elif head == ")":
-            return [Quard_Close(head)] + convert_str(tail)
+            return [Guard_Close(head)] + convert_str(tail)
         elif head == "+":
             return [Plus_Op(head)] + convert_str(tail)
         elif head == "-":
@@ -82,11 +82,3 @@ def convert_str(code : str)->List[Token]:
             return [Question(head)] + convert_str(tail)
         else:
             return [Error(head)] + convert_str(tail)
-
-
-# r = get_str_from_file("text.txt")
-# print (r)
-
-# for i in r:
-#     print(convert_str(i))
-
