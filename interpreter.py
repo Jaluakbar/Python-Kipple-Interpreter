@@ -4,14 +4,15 @@ from stack import *
 
 def loop(tokens : List[Token], stack : program_stack):
     loop_true = get_last_value(stack, tokens[0].value)
+    print(loop_true)
     if loop_true == 0:
+        print("return?")
         return
     operator(tokens, stack)
     loop(tokens, stack)
 
 
 def operator(tokens : List[Token], stack : program_stack):
-    index = [i for i, x in enumerate(tokens) if isinstance(x, Op_Token)]
     guard_open_i = [i for i, x in enumerate(tokens) if isinstance(x, Guard_Open)]
     guard_close_i = [i for i, x in enumerate(tokens) if isinstance(x, Guard_Close)]
 
@@ -23,15 +24,26 @@ def operator(tokens : List[Token], stack : program_stack):
         open_index = guard_open_i[0]
         close_index = guard_close_i[-1]
 
-        print(tokens[open_index+1:close_index])
+        print("before", tokens[0:open_index])
+        #Exeucte things before loop
+        operator(tokens[0:open_index], stack)
 
-        #rhs = get_last_value(stack, tokens[open_index+1])
+        #do loop over range
+        print("loop", tokens[open_index+1:close_index])
         loop(tokens[open_index+1:close_index], stack)
-    
+
+        #here after
+        print("REst", tokens[close_index+1:])
+        new_index = [i for i, x in enumerate(tokens[close_index+1:]) if isinstance(x, Op_Token)]
+        index = list(map(lambda x: x + close_index+1, new_index))
+    else:
+        index = [i for i, x in enumerate(tokens) if isinstance(x, Op_Token)]
 
     if len(index) == 0:
         return
-    
+
+    print(index, "INDEX")
+
     op_index = index[0]
     list_tail = tokens[op_index+1:]
 
