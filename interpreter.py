@@ -11,21 +11,63 @@ def loop(tokens : List[Token], stack : program_stack):
     operator(tokens, stack)
     loop(tokens, stack)
 
+def find_loop(tokens : List[tuple], open_guards : int = 0, guards : List = None)->List[int]:
+    # open_g = filter(lambda x: isinstance(x, Guard_Open), tokens)
+    # close_g = filter(lambda x: isinstance(x, Guard_Close), tokens)
+
+    # if len(open_g) != len(close_g):
+    #     raise Exception("The parentheses amount dont match")
+
+    if len(tokens) == 0:
+        return guards
+
+    head_token = tokens[0][0]
+    head_index = tokens[0][1]
+    tail_tokens= tokens[1:]
+
+    if isinstance(head_token, Guard):
+        if guards is None:
+            guards = []
+            
+        if isinstance(head_token, Guard_Open):
+            open_guards += 1
+            if open_guards == 1:
+                guards.append(head_index)
+            return find_loop(tail_tokens, open_guards, guards)
+
+        elif isinstance(head_token, Guard_Close):
+            open_guards -= 1
+            if open_guards == 0:
+                guards.append(head_index)
+                return guards
+            else:
+                return find_loop(tail_tokens, open_guards, guards)
+
+    else:
+        return find_loop(tail_tokens, open_guards, guards)
+
+
+
+def find_loop_index(tokens : List[Token])->List[int]:
+    num_tokens = len(tokens)
+    index_tokens = range(0,num_tokens)
+
+    return find_loop(list(zip(tokens, index_tokens)))
+
+
 
 def operator(tokens : List[Token], stack : program_stack):
-    guard_open_i = [i for i, x in enumerate(tokens) if isinstance(x, Guard_Open)]
-    guard_close_i = [i for i, x in enumerate(tokens) if isinstance(x, Guard_Close)]
+    guard_indexes = find_loop_index(tokens)
+    print("guard_indexes", guard_indexes)
 
+    if guard_indexes is not None:
+        
+        open_index = guard_indexes[0]
+        close_index = guard_indexes[1]
+        print("OPEN / CLOSE", open_index, close_index)
 
-    if len(guard_open_i) != len(guard_open_i):
-        raise Error
-    
-    if len(guard_open_i) > 0:
-        open_index = guard_open_i[0]
-        close_index = guard_close_i[-1]
-
-        print("before", tokens[0:open_index])
         #Exeucte things before loop
+        print("before", tokens[0:open_index])
         operator(tokens[0:open_index], stack)
 
         #do loop over range
