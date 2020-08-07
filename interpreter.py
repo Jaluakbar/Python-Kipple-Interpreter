@@ -60,7 +60,7 @@ def operator(tokens : List[Token], stack : program_stack):
     guard_indexes = find_loop_index(tokens)
     print("guard_indexes", guard_indexes)
 
-    if guard_indexes is not None:
+    if guard_indexes is not None and len(guard_indexes) ==2 :
         
         open_index = guard_indexes[0]
         close_index = guard_indexes[1]
@@ -128,6 +128,8 @@ def operator(tokens : List[Token], stack : program_stack):
             stack.data[lhs].clear()
         
         operator(list_tail, stack)
+
+    print("Output : ", stack.data["o"])
 
 # def interpret(tokens : List[Token], stack : program_stack):
 #     index = [i for i, x in enumerate(tokens) if isinstance(x, Control)]
