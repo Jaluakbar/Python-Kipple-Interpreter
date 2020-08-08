@@ -122,7 +122,6 @@ def main():
             continue
         interpreter = Interpreter(text)
         result = interpreter.expr()
-        print(result)
 
 
 if __name__ == '__main__':

@@ -110,11 +110,3 @@ class Interpreter():
 
     #def output(self, tokens)
 
-
-
-inter = Interpreter()
-crs = "a>3+4"
-lst = inter.lex(crs)
-
-print(lst)
-

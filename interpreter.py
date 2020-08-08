@@ -5,7 +5,6 @@ from stack import *
 
 def loop(tokens : List[Token], stack : program_stack):
     loop_true = get_last_value(stack, tokens[0].value)
-    print(loop_true)
     if loop_true == 0:
         return
     operator(tokens, stack)
@@ -144,6 +143,13 @@ def operator(tokens : List[Token], stack : program_stack):
         
         operator(list_tail, stack)
 
+def print_output_stack(stack : program_stack):
+    if (len(stack.data["o"]) == 0):
+        return
+
+    print(chr(pop_last_value(stack, "o")))
+    print_output_stack(stack)
+
 def interpret(filename : str):
     
     Stack_Holder = program_stack()
@@ -153,5 +159,6 @@ def interpret(filename : str):
 
     operator(handle_input(tokens, Stack_Holder), Stack_Holder)
 
-    print(Stack_Holder.data["o"])
+    
+    print_output_stack(Stack_Holder)
     print("STACK", Stack_Holder.data)
