@@ -123,7 +123,8 @@ def operator(tokens : List[Token], stack : program_stack):
         lhs = tokens[op_index-1].value
         rhs = get_token_value(stack, tokens[op_index+1], tokens[op_index-1])
 
-        stack.data[lhs].append(rhs)
+        #stack.data[lhs].append(rhs)
+        append_value_stack(stack, lhs, rhs)
         operator(list_tail, stack)
 
 
@@ -131,7 +132,8 @@ def operator(tokens : List[Token], stack : program_stack):
         lhs = get_token_value(stack, tokens[op_index-1], tokens[op_index+1])
         rhs = tokens[op_index+1].value
 
-        stack.data[rhs].append(lhs)
+        #stack.data[rhs].append(lhs)
+        append_value_stack(stack, rhs, lhs) 
         operator(list_tail, stack)
 
     
@@ -147,7 +149,7 @@ def print_output_stack(stack : program_stack):
     if (len(stack.data["o"]) == 0):
         return
 
-    print(chr(pop_last_value(stack, "o")))
+    print(chr(pop_last_value(stack, "o")), end=", ")
     print_output_stack(stack)
 
 def interpret(filename : str):
@@ -158,7 +160,5 @@ def interpret(filename : str):
     tokens = (convert_str(chars))
 
     operator(handle_input(tokens, Stack_Holder), Stack_Holder)
-
     
     print_output_stack(Stack_Holder)
-    print("STACK", Stack_Holder.data)

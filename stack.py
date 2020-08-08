@@ -44,11 +44,30 @@ def pop_last_value(stack : program_stack, stackname : str)->int:
     return int(stack.data[stackname].pop())
 
 def add_value_stack(stack : program_stack, stackname : str, value : int):
+    if (stackname == "@"):
+        print(value)
+        value = ord(str(value))
+        print(value)
     if len(stack.data[stackname]) == 0:
         stack.data[stackname].append(value)
     else:
-        
         stack.data[stackname][-1] += value
+
+def multiple_chr_ascii(stack : program_stack, stackname : str, value : str):
+    if len(value) == 0:
+        return
+
+    character = ord(value[0])
+    stack.data[stackname].append(character)
+
+    multiple_chr_ascii(stack, stackname, value[1:])
+
+
+def append_value_stack(stack : program_stack, stackname : str, value : int):
+    if (stackname == "@"):
+        multiple_chr_ascii(stack, stackname, str(value))
+    else:
+        stack.data[stackname].append(value)
 
 def sub_value_stack(stack : program_stack, stackname : str, value : int):
     if len(stack.data[stackname]) == 0:
