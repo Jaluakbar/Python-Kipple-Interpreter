@@ -2,11 +2,11 @@ from tokens import *
 from tokenizer import *
 from stack import *
 
+
 def loop(tokens : List[Token], stack : program_stack):
     loop_true = get_last_value(stack, tokens[0].value)
     print(loop_true)
     if loop_true == 0:
-        print("return?")
         return
     operator(tokens, stack)
     loop(tokens, stack)
@@ -46,36 +46,52 @@ def find_loop(tokens : List[tuple], open_guards : int = 0, guards : List = None)
     else:
         return find_loop(tail_tokens, open_guards, guards)
 
-
-
 def find_loop_index(tokens : List[Token])->List[int]:
     num_tokens = len(tokens)
     index_tokens = range(0,num_tokens)
 
     return find_loop(list(zip(tokens, index_tokens)))
 
+def handle_input(tokens : List[Token], stack : program_stack)->List[Token]:
+    is_input_command = any(isinstance(x, Input_Stack) for x in tokens)
+
+    if (is_input_command):
+        num_tokens = len(tokens)
+        index_tokens = range(0,num_tokens)
+        tokens_with_index = list((zip(tokens, index_tokens)))
+
+        input_tokens = [i for i, x in enumerate(tokens) if isinstance(x, Input_Stack)]
+
+        if len(input_tokens) > 1:
+            raise Exception("Sorry, only 1 input operation possible")
+        
+        elif len(input_tokens) == 1:
+            token_index = input_tokens[0]
+            input_value = int(input("Enter a input: "))
+            rhs = tokens[token_index+2].value
+
+            stack.data[rhs].append(input_value)
+
+            return tokens[token_index+2:]
+
+    return tokens
 
 
 def operator(tokens : List[Token], stack : program_stack):
     guard_indexes = find_loop_index(tokens)
-    print("guard_indexes", guard_indexes)
 
     if guard_indexes is not None and len(guard_indexes) ==2 :
         
         open_index = guard_indexes[0]
         close_index = guard_indexes[1]
-        print("OPEN / CLOSE", open_index, close_index)
 
         #Exeucte things before loop
-        print("before", tokens[0:open_index])
         operator(tokens[0:open_index], stack)
 
         #do loop over range
-        print("loop", tokens[open_index+1:close_index])
         loop(tokens[open_index+1:close_index], stack)
 
         #here after
-        print("REst", tokens[close_index+1:])
         new_index = [i for i, x in enumerate(tokens[close_index+1:]) if isinstance(x, Op_Token)]
         index = list(map(lambda x: x + close_index+1, new_index))
     else:
@@ -84,7 +100,6 @@ def operator(tokens : List[Token], stack : program_stack):
     if len(index) == 0:
         return
 
-    print(index, "INDEX")
 
     op_index = index[0]
     list_tail = tokens[op_index+1:]
@@ -129,15 +144,14 @@ def operator(tokens : List[Token], stack : program_stack):
         
         operator(list_tail, stack)
 
-    print("Output : ", stack.data["o"])
-
-# def interpret(tokens : List[Token], stack : program_stack):
-#     index = [i for i, x in enumerate(tokens) if isinstance(x, Control)]
+def interpret(filename : str):
     
-#     if len(index) == 0:
-#         return operator(tokens, stack)
-        
-#     op_index = index[0]
-#     list_tail = tokens[op_index+1:]
+    Stack_Holder = program_stack()
 
-#     if isinstance(tokens[op_index], Plus_Op):
+    chars = get_str_from_file(filename)
+    tokens = (convert_str(chars))
+
+    operator(handle_input(tokens, Stack_Holder), Stack_Holder)
+
+    print(Stack_Holder.data["o"])
+    print("STACK", Stack_Holder.data)

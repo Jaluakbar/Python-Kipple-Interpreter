@@ -47,6 +47,7 @@ def add_value_stack(stack : program_stack, stackname : str, value : int):
     if len(stack.data[stackname]) == 0:
         stack.data[stackname].append(value)
     else:
+        
         stack.data[stackname][-1] += value
 
 def sub_value_stack(stack : program_stack, stackname : str, value : int):
@@ -56,6 +57,7 @@ def sub_value_stack(stack : program_stack, stackname : str, value : int):
         stack.data[stackname][-1] -= value
 
 def get_token_value(stack : program_stack, token : Token, other : Token)->int:
+    #Prevent assigning to self 
     if token.value != other.value:
         if isinstance(token, Normal_Stack):
             return pop_last_value(stack, token.value)
@@ -66,16 +68,3 @@ def get_token_value(stack : program_stack, token : Token, other : Token)->int:
             return get_last_value(stack, token.value)
         else:
             return int(token.value)
-
-
-
-
-# c.data["a"].append(1)
-# c.data["a"].append(2)
-
-# add_value_stack(Stack_Holder, "a", 4)
-
-# sub_value_stack(c, "a", 7)
-
-# pop_last_value(c, "a")
-
