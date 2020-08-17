@@ -1,3 +1,4 @@
+
 # Kipple Language Python Interpreter
 Kipple is een simpele esoteric programming language (esolang) met operators, stacks and een control structuur. De taal heeft stacks die genoemd worden als het alfabet, van 'a' tot en met 'z' en  een extra stack '@'. De taal heeft 5 operators en een control structuur, de loop. De stacks zijn Last In First Out (LIFO).
 
@@ -11,6 +12,11 @@ Kipple is een simpele esoteric programming language (esolang) met operators, sta
 
 
 # Hoe werkt het
+
+De Kipple programma moet geschreven worden in een *txt* file. Deze *txt* file naam moet je meegeven als parameter aan de interpret(filename) functie. 
+
+De interpreter maakt een stack aan waar waardes worden bewaard. Daarna worden de character uit de file gelezen en geconverteerd naar Tokens. Deze tokens worden daarna gegeven aan de operator functie, deze gaat over alle tokens heen en opereert alle operators die hij vindt. Als er input stack wordt gebruikt dan wordt het op het start van de programma gevraagd. Als laatste print hij de Output Stack.
+
 
 # Hoe gebruikt je het
 
@@ -37,28 +43,36 @@ Omdat de laatste waarde in b 0 is, is b nu leeg [].
 
 - Toevoegen
 
-`
+```
 10>a
 123>b
 a+b
-`
+```
 
 Dit resulteert in a = [133] en b is leeg [].
 
 - Aftrekken
 
-`
+```
 1>c
 2>d
 c-d
-`
+```
 Dit resulteert in c = [-1] en d is leeg [].
 - Lus
 
-`
+```
 10>a
 (a-1 b+1)
+```
+
+- Input
+
 `
+i>o
+`
+
+Als er input stack is gebruikt, moet die geassigned worden aan een andere stack. Er zal aan het start van de programma gevraagd worden voor input. Let op : Dit kan alleen een keer in gebruikt worden.
 
 De lus blijft door gaan tot dat de waarde na de open haakje '(' nul is. Hier gaat de lus over a, dit resulteert in stack 'a' leeg/nul wordt [] en 'b' = [10]
 
@@ -70,17 +84,25 @@ De lus blijft door gaan tot dat de waarde na de open haakje '(' nul is. Hier gaa
 
 - Nummers printen van 0 tot het aantal gegeven in de input
 
-`
+```
   i>n
   (n-1 n<n>@ @>o)
-`
--  Plus en nummers printen
+```
+-  Rekenen en printen van nummers
 
-`
+```
 15>a
 12213>b
 a+b 
 a>@
 (@>o)
-`
+```
 
+-Lussen om te vermenigvuldigen
+
+```
+20>a
+(a-1 b<3 (b-1 c+1))
+c>@
+(@>o)
+```
