@@ -1,7 +1,7 @@
 from tokens import *
 from tokenizer import *
 from stack import *
-
+from counter import *
 
 def loop(tokens : List[Token], stack : program_stack):
     loop_true = get_last_value(stack, tokens[0].value)
@@ -10,13 +10,8 @@ def loop(tokens : List[Token], stack : program_stack):
     operator(tokens, stack)
     loop(tokens, stack)
 
+@function_used_counter
 def find_loop(tokens : List[tuple], open_guards : int = 0, guards : List = None)->List[int]:
-    # open_g = filter(lambda x: isinstance(x, Guard_Open), tokens)
-    # close_g = filter(lambda x: isinstance(x, Guard_Close), tokens)
-
-    # if len(open_g) != len(close_g):
-    #     raise Exception("The parentheses amount dont match")
-
     if len(tokens) == 0:
         return guards
 
@@ -159,6 +154,9 @@ def interpret(filename : str):
     chars = get_str_from_file(filename)
     tokens = (convert_str(chars))
 
+
     operator(handle_input(tokens, Stack_Holder), Stack_Holder)
     
+    print(Stack_Holder.data)
+
     print_output_stack(Stack_Holder)

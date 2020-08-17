@@ -1,5 +1,9 @@
 from interpreter import *
+from counter import *
 
 interpret("text.txt")
 
-#TODO Fix if i is used, skip the i operation
+#print("Loop finder called : ", find_loop.counter, "times")
+
+
+#TODO Documenttation10
