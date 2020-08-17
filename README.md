@@ -98,7 +98,7 @@ a>@
 (@>o)
 ```
 
--Lussen om te vermenigvuldigen
+- Lussen om te vermenigvuldigen
 
 ```
 20>a
